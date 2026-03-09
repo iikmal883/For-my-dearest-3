@@ -24,7 +24,7 @@
             overflow: hidden;
         }
 
-        /* 1. THE BACKGROUND STUFF (This will blur) */
+        /* 1. THE BACKGROUND STUFF (Will be blurred/faded) */
         #background-content {
             position: absolute;
             width: 100%;
@@ -35,9 +35,10 @@
             justify-content: center;
             transition: filter 0.6s ease, opacity 0.6s ease;
             z-index: 1;
+            text-align: center;
         }
 
-        /* 2. THE BLUR OVERLAY (Sits between background and letter) */
+        /* 2. THE BLUR/DIM LAYER (Sits between background and letter) */
         #blur-layer {
             position: absolute;
             top: 0;
@@ -53,22 +54,22 @@
             z-index: 5;
         }
 
-        /* 3. THE LETTER (Top Layer - Completely separate) */
+        /* 3. THE LETTER (Top Layer - Completely separate for clarity) */
         #letter-overlay {
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%) scale(0);
-            width: 550px; /* Wider as requested */
+            width: 550px; 
             max-width: 90vw;
-            height: 620px;
-            max-height: 85vh;
+            height: 650px;
+            max-height: 90vh;
             background: #fffdfa;
-            padding: 40px;
+            padding: 35px;
             box-sizing: border-box;
             border-radius: 4px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.2);
-            z-index: 100; /* Highest possible */
+            z-index: 100; 
             opacity: 0;
             visibility: hidden;
             transition: transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.5s ease;
@@ -76,8 +77,8 @@
             flex-direction: column;
         }
 
-        /* Active State */
-        .show-letter #background-content { filter: blur(4px); opacity: 0.4; }
+        /* Active State Classes */
+        .show-letter #background-content { filter: blur(4px); opacity: 0.3; }
         .show-letter #blur-layer { opacity: 1; visibility: visible; }
         .show-letter #letter-overlay { opacity: 1; visibility: visible; transform: translate(-50%, -50%) scale(1); }
 
@@ -102,27 +103,94 @@
         }
         .open.envelope-wrapper::before { transform: rotateX(180deg); }
 
-        /* Letter Content */
-        .letter-header { font-size: 1.2rem; color: #ff4d6d; font-weight: bold; margin-bottom: 15px; text-align: center; }
-        .letter-content { font-size: 0.95rem; line-height: 1.6; color: #333; text-align: justify; font-family: 'Georgia', serif; }
-        .letter-footer { font-size: 0.75rem; font-weight: bold; color: #ff4d6d; margin-top: auto; text-align: center; border-top: 1px solid #eee; padding-top: 15px; }
-        .letter img { width: 110px; height: 110px; object-fit: cover; border-radius: 50%; margin: 0 auto 15px auto; border: 4px solid white; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-
-        /* Buttons */
-        .btn-choice { padding: 12px 30px; border: none; border-radius: 25px; font-weight: bold; cursor: pointer; background: var(--pink-dark); color: white; margin: 10px; box-shadow: 0 4px 0 #e07a91; }
-        .wa-link { 
-            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
-            background: var(--whatsapp-green); color: white; padding: 12px 40px; border-radius: 30px; 
-            font-weight: bold; text-decoration: none; z-index: 110; display: none;
+        /* Letter Content Styling */
+        .letter-header { 
+            font-size: 1.2rem; 
+            color: #ff4d6d; 
+            font-weight: bold; 
+            margin-bottom: 12px; 
+            text-align: center; 
+        }
+        .letter-content { 
+            font-size: 0.9rem; 
+            line-height: 1.5; 
+            color: #333; 
+            text-align: justify; 
+            font-family: 'Georgia', serif; 
+        }
+        .letter-footer { 
+            font-size: 0.75rem; 
+            font-weight: bold; 
+            color: #ff4d6d; 
+            margin-top: auto; 
+            text-align: center; 
+            border-top: 1px solid #eee; 
+            padding-top: 15px; 
+        }
+        .letter img { 
+            width: 130px; 
+            height: 130px; 
+            object-fit: cover; 
+            border-radius: 10px; 
+            margin: 0 auto 12px auto; 
+            border: 4px solid white; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
+            display: block;
         }
 
-        #no-screen { display: none; text-align: center; z-index: 200; position: absolute; background: #fff0f3; width: 100%; height: 100%; display: none; align-items: center; justify-content: center; flex-direction: column; }
+        /* Buttons */
+        .btn-choice { 
+            padding: 12px 30px; 
+            border: none; 
+            border-radius: 25px; 
+            font-weight: bold; 
+            cursor: pointer; 
+            background: var(--pink-dark); 
+            color: white; 
+            margin: 10px; 
+            box-shadow: 0 4px 0 #e07a91; 
+            transition: transform 0.2s;
+        }
+        .btn-choice:active { transform: translateY(3px); box-shadow: none; }
+
+        .wa-link { 
+            position: fixed; 
+            bottom: 30px; 
+            left: 50%; 
+            transform: translateX(-50%);
+            background: var(--whatsapp-green); 
+            color: white; 
+            padding: 12px 40px; 
+            border-radius: 30px; 
+            font-weight: bold; 
+            text-decoration: none; 
+            z-index: 110; 
+            display: none;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            animation: fadeIn 0.8s ease forwards;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* Screens */
+        #no-screen { 
+            display: none; 
+            text-align: center; 
+            z-index: 200; 
+            position: absolute; 
+            background: #fff0f3; 
+            width: 100%; 
+            height: 100%; 
+            align-items: center; 
+            justify-content: center; 
+            flex-direction: column; 
+        }
     </style>
 </head>
 <body>
 
     <div id="background-content">
-        <p class="intro-text">I made a little something special just for you! 💌✨</p>
+        <p class="intro-text" style="color: var(--soft-text); font-style: italic;">I made a little something special just for you! 💌✨</p>
         <h1 style="color: var(--pink-dark);">Do you want to open now?</h1>
         
         <div class="envelope-wrapper" id="envelope-container"></div>
@@ -137,11 +205,14 @@
 
     <div id="letter-overlay">
         <img src="picture.jpeg" alt="Birthday Photo">
+        
         <div class="letter-header">HAPPY BIRTHDAY TO MY DEAREST</div>
+        
         <div class="letter-content">
             On your special day, I just want you to know how grateful I am to have you in my life. You are not only someone I love, but also someone who inspires me to be a better person every day. Your kindness, smile, laugh, strength, and the way you care about others make you truly special. Being with you brings so much happiness and comfort into my life, and I honestly cannot imagine my days without you. <br><br>
             I hope this year brings you endless happiness, success, and all the beautiful things you deserve. No matter what happens in the future, i will always be thankful for the memories we share and the love we have. Happy birthday again dear, and i hope today reminds you how deeply you are loved and appreciated.
         </div>
+        
         <div class="letter-footer">
             PLEASE DO OPEN THIS WHENEVER YOU ARE BEING MAD AT ME &gt;:(
         </div>
@@ -158,14 +229,17 @@
 
     <script>
         function handleYes() {
-            // Open envelope flap
+            // 1. Open envelope flap
             document.getElementById('envelope-container').classList.add('open');
             
-            // Trigger the focused view
+            // 2. Hide original buttons
+            document.getElementById('initial-controls').style.visibility = 'hidden';
+            
+            // 3. Trigger the focused letter view
             setTimeout(() => {
                 document.body.classList.add('show-letter');
                 document.getElementById('wa-btn').style.display = 'block';
-            }, 400);
+            }, 450);
         }
 
         function showNoScreen() {
