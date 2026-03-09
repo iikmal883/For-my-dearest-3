@@ -11,8 +11,8 @@
             --ribbon-red: #ff4d6d;
             --soft-text: #8b5e66;
             --whatsapp-green: #25D366;
-            --paper-width: 500px; /* Wider for letter style */
-            --paper-height: 580px; 
+            --paper-width: 500px;
+            --paper-height: 600px;
         }
 
         body {
@@ -26,19 +26,20 @@
             overflow: hidden;
         }
 
-        /* Screen Dimming/Blurring Layer */
+        /* The Blur Layer - Now strictly behind the letter */
         #overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(255, 240, 243, 0.4);
-            backdrop-filter: blur(10px);
-            z-index: 10;
+            background: rgba(255, 240, 243, 0.5);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            z-index: 50; /* Middle layer */
             opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.8s ease, visibility 0.8s ease;
+            transition: opacity 0.6s ease;
+            pointer-events: none; /* Allows clicking through if needed */
         }
 
         .blur-target {
@@ -46,7 +47,7 @@
         }
 
         .page-open .blur-target {
-            filter: blur(4px);
+            filter: blur(2px);
             opacity: 0.3;
         }
 
@@ -57,24 +58,13 @@
             justify-content: center;
             width: 100%;
             text-align: center;
-            z-index: 5;
+            z-index: 10; /* Bottom layer */
         }
 
-        .intro-text {
-            color: var(--soft-text);
-            font-size: 1.1rem;
-            margin-bottom: 5px;
-            font-style: italic;
-        }
+        .intro-text { color: var(--soft-text); font-size: 1.1rem; margin-bottom: 5px; font-style: italic; }
+        h1 { color: var(--pink-dark); text-shadow: 2px 2px white; margin-top: 0; margin-bottom: 60px; }
 
-        h1 {
-            color: var(--pink-dark);
-            text-shadow: 2px 2px white;
-            margin-top: 0;
-            margin-bottom: 60px;
-        }
-
-        /* Envelope Styling */
+        /* Envelope */
         .envelope-wrapper {
             position: relative;
             width: 200px;
@@ -82,7 +72,6 @@
             background: var(--pink-main);
             border-radius: 0 0 5px 5px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            z-index: 6;
         }
 
         .envelope-wrapper::before {
@@ -111,60 +100,33 @@
             z-index: 7;
         }
 
-        /* Letter Styling - Wider and Paper Textured */
+        /* Letter - Now on the highest Z-INDEX */
         .letter {
             position: fixed;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%) scale(0.1);
+            transform: translate(-50%, -50%) scale(0);
             width: var(--paper-width);
             height: var(--paper-height);
-            
-            /* Letter Paper Aesthetic */
-            background: #fffdfa; /* Off-white paper color */
-            background-image: radial-gradient(#e5e5e5 1px, transparent 1px);
-            background-size: 20px 20px; /* Subtle stationery dots */
-            
-            padding: 50px;
+            background: #fffdfa;
+            padding: 40px;
             box-sizing: border-box;
             border-radius: 2px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1), 0 20px 50px rgba(0,0,0,0.15);
-            
+            box-shadow: 0 10px 50px rgba(0,0,0,0.2);
             display: flex;
             flex-direction: column;
-            justify-content: flex-start;
-            
+            z-index: 100; /* Highest layer - guaranteed clear */
             opacity: 0;
-            visibility: hidden;
-            z-index: 100;
-            overflow: hidden;
-            
-            transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.6s ease, visibility 0.6s ease;
-        }
-
-        /* Responsive width for smaller screens */
-        @media (max-width: 600px) {
-            :root { --paper-width: 90%; --paper-height: auto; }
-            .letter { padding: 30px; justify-content: center; height: 90vh; }
+            transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.5s ease;
         }
 
         .page-open .letter {
-            opacity: 1;
-            visibility: visible;
             transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
         }
 
         .page-open #overlay {
             opacity: 1;
-            visibility: visible;
-        }
-
-        .letter-content {
-            font-size: 0.95rem; /* Decreased size as requested */
-            line-height: 1.7;
-            color: #333;
-            text-align: justify;
-            font-family: 'Georgia', serif; /* Classic letter font */
         }
 
         .letter-header {
@@ -173,41 +135,44 @@
             font-weight: bold;
             margin-bottom: 15px;
             text-align: center;
-            letter-spacing: 1px;
+        }
+
+        .letter-content {
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: #333;
+            text-align: justify;
+            font-family: 'Georgia', serif;
         }
 
         .letter-footer {
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             font-weight: bold;
             color: #ff4d6d;
-            margin-top: auto; /* Pushes to bottom */
-            padding-top: 20px;
+            margin-top: auto;
             text-align: center;
             border-top: 1px solid #eee;
+            padding-top: 15px;
         }
 
         .letter img {
-            width: 140px;
-            height: 140px;
+            width: 120px;
+            height: 120px;
             object-fit: cover;
-            border-radius: 50%; /* Polaroid or Portrait feel */
-            margin: 0 auto 20px auto;
-            border: 5px solid white;
+            border-radius: 50%;
+            margin: 0 auto 15px auto;
+            border: 4px solid white;
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
 
-        .open.envelope-wrapper::before {
-            transform: rotateX(180deg);
-        }
-
-        /* Final Buttons */
+        /* WhatsApp Button */
         #wa-button-container {
             position: fixed;
             bottom: 30px;
             left: 50%;
             transform: translateX(-50%);
             display: none;
-            z-index: 110;
+            z-index: 110; /* Above everything */
         }
 
         .wa-link {
@@ -218,17 +183,22 @@
             font-weight: bold;
             text-decoration: none;
             box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
-            animation: fadeIn 1s ease 1s forwards;
             opacity: 0;
+            animation: fadeIn 0.5s ease 1s forwards;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        @keyframes fadeIn { to { opacity: 1; } }
 
-        #no-screen { display: none; text-align: center; }
         .btn-choice { padding: 12px 30px; border: none; border-radius: 25px; font-weight: bold; cursor: pointer; background: var(--pink-dark); color: white; box-shadow: 0 4px 0 #e07a91; }
+        .open.envelope-wrapper::before { transform: rotateX(180deg); }
+        #no-screen { display: none; text-align: center; }
+
+        /* Responsive for Mobile */
+        @media (max-width: 550px) {
+            :root { --paper-width: 90%; --paper-height: 85vh; }
+            .letter { padding: 25px; }
+            .letter-content { font-size: 0.85rem; }
+        }
     </style>
 </head>
 <body>
@@ -245,7 +215,8 @@
             <img src="https://via.placeholder.com/150/ffb7c5/ffffff?text=US" alt="Birthday Photo">
             <div class="letter-header">HAPPY BIRTHDAY TO MY DEAREST</div>
             <div class="letter-content">
-                On your special day, I just want you to know how grateful I am to have you in my life. You are not only someone I love, but also someone who inspires me to be a better person every day. Your kindness, smile, laugh, strength, and the way you care about others make you truly special. Being with you brings so much happiness and comfort into my life, and I honestly cannot imagine my days without you.<br><br>I hope this year brings you endless happiness, success, and all the beautiful things you deserve. No matter what happens in the future, I will always be thankful for the memories we share and the love we have. Happy birthday again dear, and I hope today reminds you how deeply you are loved and appreciated.
+                On your special day, I just want you to know how grateful I am to have you in my life. You are not only someone I love, but also someone who inspires me to be a better person every day. Your kindness, smile, laugh, strength, and the way you care about others make you truly special. Being with you brings so much happiness and comfort into my life, and I honestly cannot imagine my days without you. <br><br>
+                I hope this year brings you endless happiness, success, and all the beautiful things you deserve. No matter what happens in the future, I will always be thankful for the memories we share and the love we have. Happy birthday again dear, and I hope today reminds you how deeply you are loved and appreciated.
             </div>
             <div class="letter-footer">
                 PLEASE DO OPEN THIS WHENEVER YOU ARE BEING MAD AT ME &gt;:(
