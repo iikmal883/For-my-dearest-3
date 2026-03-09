@@ -52,18 +52,18 @@
             z-index: 5;
         }
 
-        /* FIXED: Changed fixed height to auto and added min-height */
         #letter-overlay {
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%) scale(0);
-            width: 500px; 
-            max-width: 90vw;
-            min-height: 400px; /* Base height */
-            height: auto;      /* Paper will grow with text */
+            /* INCREASED WIDTH FOR BALANCE */
+            width: 620px; 
+            max-width: 95vw;
+            min-height: 400px; 
+            height: auto;      
             background: #fffdfa;
-            padding: 40px;
+            padding: 50px; /* INCREASED PADDING FOR BETTER LAYOUT */
             box-sizing: border-box;
             border-radius: 4px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.2);
@@ -99,7 +99,7 @@
         }
         .open.envelope-wrapper::before { transform: rotateX(180deg); }
 
-        /* FIXED: Forced image size to stay small */
+        /* FIXED: Image is now MUCH smaller */
         .letter img { 
             width: 80px !important;  
             height: 80px !important; 
@@ -112,31 +112,32 @@
         }
 
         .letter-header { 
-            font-size: 1.2rem; 
+            font-size: 1.25rem; 
             color: #ff4d6d; 
             font-weight: bold; 
-            margin-bottom: 15px; 
+            margin-bottom: 20px; 
             text-align: center; 
+            letter-spacing: 0.5px;
         }
 
-        /* FIXED: Text will now stay inside the paper */
         .letter-content { 
-            font-size: 0.95rem; 
-            line-height: 1.6; 
+            font-size: 1rem; 
+            line-height: 1.7; 
             color: #333; 
             text-align: justify; 
             font-family: 'Georgia', serif; 
-            margin-bottom: 20px;
+            margin-bottom: 30px;
+            hyphens: auto; /* Helps long words break cleanly */
         }
 
         .letter-footer { 
-            font-size: 0.75rem; 
+            font-size: 0.8rem; 
             font-weight: bold; 
             color: #ff4d6d; 
             text-align: center; 
             border-top: 1px solid #eee; 
-            padding-top: 15px; 
-            margin-top: 10px;
+            padding-top: 20px; 
+            margin-top: auto;
         }
 
         .btn-choice { padding: 12px 30px; border: none; border-radius: 25px; font-weight: bold; cursor: pointer; background: var(--pink-dark); color: white; margin: 10px; box-shadow: 0 4px 0 #e07a91; }
@@ -167,6 +168,7 @@
 
     <div id="letter-overlay">
         <img src="picture.jpeg" alt="Birthday Photo">
+        
         <div class="letter-header">HAPPY BIRTHDAY TO MY DEAREST</div>
         <div class="letter-content">
             On your special day, I just want you to know how grateful I am to have you in my life. You are not only someone I love, but also someone who inspires me to be a better person every day. Your kindness, smile, laugh, strength, and the way you care about others make you truly special. Being with you brings so much happiness and comfort into my life, and I honestly cannot imagine my days without you. <br><br>
