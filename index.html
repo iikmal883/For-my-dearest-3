@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Special Surprise</title>
+    <style>
+        :root {
+            --pink-main: #ffb7c5;
+            --pink-dark: #ff8fab;
+            --ribbon-red: #ff4d6d;
+        }
+
+        body {
+            background-color: #fff0f3;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        /* Girly Decorations */
+        body::before {
+            content: "🎀 🌸 🎀 🌸";
+            font-size: 2rem;
+            position: absolute;
+            top: 20px;
+        }
+
+        h1 {
+            color: var(--pink-dark);
+            text-shadow: 2px 2px white;
+            margin-bottom: 20px;
+        }
+
+        /* Envelope Styling */
+        .envelope-wrapper {
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .envelope {
+            position: relative;
+            width: 200px;
+            height: 150px;
+            background: var(--pink-main);
+            border-radius: 0 0 5px 5px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .envelope::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            z-index: 2;
+            border-left: 100px solid transparent;
+            border-right: 100px solid transparent;
+            border-top: 80px solid var(--pink-dark);
+            transform-origin: top;
+            transition: transform 0.5s;
+        }
+
+        .letter {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            width: 180px;
+            height: 130px;
+            background: white;
+            text-align: center;
+            padding: 10px;
+            box-sizing: border-box;
+            transition: transform 0.5s;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            border: 1px dashed var(--pink-dark);
+        }
+
+        .letter img {
+            width: 100%;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+
+        /* Animations */
+        .open.envelope::before {
+            transform: rotateX(180deg);
+            z-index: 0;
+        }
+
+        .open .letter {
+            transform: translateY(-100px);
+            z-index: 3;
+            height: 200px;
+        }
+
+        /* Buttons */
+        .btn-container {
+            margin-top: 30px;
+            display: flex;
+            gap: 20px;
+        }
+
+        button {
+            padding: 10px 25px;
+            border: none;
+            border-radius: 20px;
+            background: var(--pink-dark);
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 0 #e07a91;
+        }
+
+        button:active {
+            transform: translateY(3px);
+            box-shadow: none;
+        }
+
+        #no-screen {
+            display: none;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="main-screen">
+        <h1>Do you want to open now?</h1>
+        
+        <div class="envelope-wrapper" id="envelope-container">
+            <div class="envelope" id="envelope-body">
+                <div class="letter">
+                    <p style="font-size: 0.8rem; color: #ff4d6d; font-weight: bold;">HAPPY BIRTHDAY MY SWEETHEART</p>
+                    <img src="https://via.placeholder.com/150/ffb7c5/ffffff?text=Your+Photo" alt="Birthday Photo">
+                </div>
+            </div>
+        </div>
+
+        <div class="btn-container" id="controls">
+            <button onclick="openEnvelope()">YES</button>
+            <button onclick="showNoScreen()">NO</button>
+        </div>
+    </div>
+
+    <div id="no-screen">
+        <h1>Pretty please? 🥺</h1>
+        <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHYycWp6Z3R3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZ29vZCZjdD1z/cLS1cfxvGOPVpf9g3y/giphy.gif" width="200">
+        <br><br>
+        <button onclick="backToYes()">Open Anyway</button>
+    </div>
+
+    <script>
+        function openEnvelope() {
+            document.getElementById('envelope-body').classList.add('open');
+        }
+
+        function showNoScreen() {
+            document.getElementById('main-screen').style.display = 'none';
+            document.getElementById('no-screen').style.display = 'block';
+        }
+
+        function backToYes() {
+            document.getElementById('no-screen').style.display = 'none';
+            document.getElementById('main-screen').style.display = 'flex';
+            setTimeout(openEnvelope, 300);
+        }
+    </script>
+</body>
+</html>
