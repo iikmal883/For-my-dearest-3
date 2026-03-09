@@ -84,46 +84,77 @@
             z-index: 3;
         }
 
+        /* Adjusted Large Letter */
         .letter {
             position: absolute;
-            bottom: 10px;
-            left: 10px;
-            width: 180px;
-            height: 130px;
+            bottom: 5px;
+            left: 5px;
+            width: 190px;
+            height: 140px;
             background: white;
             text-align: center;
             padding: 15px;
             box-sizing: border-box;
-            transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.4s ease;
+            transition: transform 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.4s ease;
             z-index: 1;
             display: flex;
             flex-direction: column;
-            justify-content: center;
             border: 1px dashed var(--pink-dark);
             opacity: 0;
+            overflow-y: auto; /* Allow scrolling if text is long */
+            scrollbar-width: none; /* Hide scrollbar for clean look */
+        }
+
+        .letter::-webkit-scrollbar { display: none; }
+
+        .letter-content {
+            font-size: 0.7rem;
+            line-height: 1.4;
+            color: #444;
+            text-align: left;
+        }
+
+        .letter-header {
+            font-size: 0.85rem;
+            color: #ff4d6d;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .letter-footer {
+            font-size: 0.65rem;
+            font-weight: bold;
+            color: #ff4d6d;
+            margin-top: 10px;
+            text-align: center;
         }
 
         .letter img {
             width: 100%;
-            height: 70px;
+            height: auto;
+            max-height: 100px;
             object-fit: cover;
             border-radius: 5px;
-            margin-top: 5px;
+            margin-bottom: 10px;
         }
 
+        /* Animation States */
         .open.envelope-wrapper::before {
             transform: rotateX(180deg);
             z-index: 0;
         }
 
         .open .letter {
-            transform: translateY(-130px);
+            transform: translateY(-180px); /* Lifted higher because the paper is taller */
             z-index: 5;
             opacity: 1;
-            height: 210px;
+            height: 320px; /* Increased height of the paper */
+            width: 240px;  /* Increased width of the paper */
+            left: -20px;   /* Center wider paper over envelope */
         }
 
-        /* Buttons Control */
+        /* Buttons */
         .btn-container {
             margin-top: 60px;
             display: flex;
@@ -131,7 +162,7 @@
             z-index: 10;
         }
 
-        button, .wa-link {
+        .btn-choice, .wa-link {
             padding: 12px 30px;
             border: none;
             border-radius: 25px;
@@ -153,9 +184,8 @@
             transform: scale(1.05);
         }
 
-        /* WhatsApp Button Styling */
         #wa-button-container {
-            display: none; /* Hidden by default */
+            display: none;
             margin-top: 60px;
         }
 
@@ -164,12 +194,6 @@
             color: white;
             box-shadow: 0 4px 0 #1da851;
             animation: fadeIn 0.8s ease forwards;
-        }
-
-        .wa-link:hover {
-            background: #1ebe57;
-            transform: translateY(-3px);
-            box-shadow: 0 6px 0 #1da851;
         }
 
         @keyframes fadeIn {
@@ -191,8 +215,14 @@
         
         <div class="envelope-wrapper" id="envelope-container">
             <div class="letter">
-                <p style="font-size: 0.8rem; color: #ff4d6d; font-weight: bold; margin: 0;">HAPPY BIRTHDAY MY SWEETHEART</p>
-                <img src="https://via.placeholder.com/150/ffb7c5/ffffff?text=Your+Photo" alt="Birthday Photo">
+                <img src="https://via.placeholder.com/200/ffb7c5/ffffff?text=Our+Memory" alt="Birthday Photo">
+                <div class="letter-header">HAPPY BIRTHDAY TO MY DEAREST</div>
+                <div class="letter-content">
+                    On your special day, I just want you to know how grateful I am to have you in my life. You are not only someone I love, but also someone who inspires me to be a better person every day. Your kindness, smile, laugh, strength, and the way you care about others make you truly special. Being with you brings so much happiness and comfort into my life, and I honestly cannot imagine my days without you. I hope this year brings you endless happiness, success, and all the beautiful things you deserve. No matter what happens in the future, I will always be thankful for the memories we share and the love we have. Happy birthday again dear, and I hope today reminds you how deeply you are loved and appreciated.
+                </div>
+                <div class="letter-footer">
+                    PLEASE DO OPEN THIS WHENEVER YOU ARE BEING MAD AT ME >:(
+                </div>
             </div>
         </div>
 
@@ -215,13 +245,8 @@
 
     <script>
         function handleYes() {
-            // Open the envelope
             document.getElementById('envelope-container').classList.add('open');
-            
-            // Hide the Yes/No buttons
             document.getElementById('initial-controls').style.display = 'none';
-            
-            // Show the WhatsApp button
             document.getElementById('wa-button-container').style.display = 'block';
         }
 
