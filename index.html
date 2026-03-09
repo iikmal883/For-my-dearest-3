@@ -52,20 +52,20 @@
             z-index: 5;
         }
 
+        /* PHONE FRIENDLY LETTER */
         #letter-overlay {
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%) scale(0);
-            /* INCREASED WIDTH FOR BALANCE */
-            width: 620px; 
-            max-width: 95vw;
-            min-height: 400px; 
-            height: auto;      
+            width: 350px; /* Smaller base width */
+            max-width: 85vw; /* Very safe for all phones */
+            height: 500px; /* Fixed height to enable scrolling */
+            max-height: 75vh;
             background: #fffdfa;
-            padding: 50px; /* INCREASED PADDING FOR BETTER LAYOUT */
+            padding: 25px;
             box-sizing: border-box;
-            border-radius: 4px;
+            border-radius: 12px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.2);
             z-index: 100; 
             opacity: 0;
@@ -73,6 +73,12 @@
             transition: transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.5s ease;
             display: flex;
             flex-direction: column;
+            overflow-y: auto; /* MAKES IT SCROLLABLE */
+            scrollbar-width: none; /* Hides scrollbar for Firefox */
+        }
+
+        #letter-overlay::-webkit-scrollbar {
+            display: none; /* Hides scrollbar for Chrome/Safari */
         }
 
         .show-letter #background-content { filter: blur(4px); opacity: 0.3; }
@@ -99,54 +105,54 @@
         }
         .open.envelope-wrapper::before { transform: rotateX(180deg); }
 
-        /* FIXED: Image is now MUCH smaller */
+        /* IMAGE STYLE */
         .letter img { 
             width: 80px !important;  
             height: 80px !important; 
             object-fit: cover; 
-            border-radius: 8px; 
+            border-radius: 50%; /* Back to circle for mobile cuteness */
             margin: 0 auto 15px auto; 
-            border: 2px solid white; 
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
+            border: 3px solid white; 
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1); 
             display: block;
+            flex-shrink: 0;
         }
 
         .letter-header { 
-            font-size: 1.25rem; 
+            font-size: 1.1rem; 
             color: #ff4d6d; 
             font-weight: bold; 
-            margin-bottom: 20px; 
+            margin-bottom: 15px; 
             text-align: center; 
-            letter-spacing: 0.5px;
         }
 
         .letter-content { 
-            font-size: 1rem; 
-            line-height: 1.7; 
+            font-size: 0.95rem; 
+            line-height: 1.6; 
             color: #333; 
-            text-align: justify; 
-            font-family: 'Georgia', serif; 
-            margin-bottom: 30px;
-            hyphens: auto; /* Helps long words break cleanly */
+            text-align: center; /* Centered looks better on mobile cards */
+            font-family: 'Segoe UI', sans-serif; 
+            margin-bottom: 20px;
         }
 
         .letter-footer { 
-            font-size: 0.8rem; 
+            font-size: 0.75rem; 
             font-weight: bold; 
             color: #ff4d6d; 
             text-align: center; 
-            border-top: 1px solid #eee; 
-            padding-top: 20px; 
+            border-top: 1px dashed #ffb7c5; 
+            padding-top: 15px; 
             margin-top: auto;
         }
 
         .btn-choice { padding: 12px 30px; border: none; border-radius: 25px; font-weight: bold; cursor: pointer; background: var(--pink-dark); color: white; margin: 10px; box-shadow: 0 4px 0 #e07a91; }
         
         .wa-link { 
-            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+            position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%);
             background: var(--whatsapp-green); color: white; padding: 12px 40px; border-radius: 30px; 
             font-weight: bold; text-decoration: none; z-index: 110; display: none;
             box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            white-space: nowrap;
         }
 
         #no-screen { display: none; text-align: center; z-index: 200; position: absolute; background: #fff0f3; width: 100%; height: 100%; align-items: center; justify-content: center; flex-direction: column; }
@@ -155,8 +161,8 @@
 <body>
 
     <div id="background-content">
-        <p style="color: var(--soft-text); font-style: italic;">I made a little something special just for you! 💌✨</p>
-        <h1 style="color: var(--pink-dark);">Do you want to open now?</h1>
+        <p style="color: var(--soft-text); font-style: italic; font-size: 0.9rem; padding: 0 20px;">I made a little something special just for you! 💌✨</p>
+        <h1 style="color: var(--pink-dark); font-size: 1.4rem;">Do you want to open now?</h1>
         <div class="envelope-wrapper" id="envelope-container"></div>
         <div id="initial-controls" style="margin-top: 40px;">
             <button class="btn-choice" onclick="handleYes()">YES</button>
@@ -183,7 +189,7 @@
 
     <div id="no-screen">
         <h1 style="color: var(--pink-dark);">Pretty please? 🥺</h1>
-        <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHYycWp6Z3R3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZ29vZCZjdD1z/cLS1cfxvGOPVpf9g3y/giphy.gif" width="200">
+        <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHYycWp6Z3R3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZ29vZCZjdD1z/cLS1cfxvGOPVpf9g3y/giphy.gif" width="180">
         <br><button class="btn-choice" onclick="backToYes()">Open Anyway</button>
     </div>
 
