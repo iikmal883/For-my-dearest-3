@@ -52,17 +52,18 @@
             z-index: 5;
         }
 
+        /* FIXED: Changed fixed height to auto and added min-height */
         #letter-overlay {
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%) scale(0);
-            width: 580px; 
-            max-width: 95vw;
-            height: 600px;
-            max-height: 90vh;
+            width: 500px; 
+            max-width: 90vw;
+            min-height: 400px; /* Base height */
+            height: auto;      /* Paper will grow with text */
             background: #fffdfa;
-            padding: 45px;
+            padding: 40px;
             box-sizing: border-box;
             border-radius: 4px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.2);
@@ -98,48 +99,48 @@
         }
         .open.envelope-wrapper::before { transform: rotateX(180deg); }
 
-        /* IMAGE SIZE REDUCED */
+        /* FIXED: Forced image size to stay small */
         .letter img { 
-            width: 70px;  
-            height: 70px; 
+            width: 80px !important;  
+            height: 80px !important; 
             object-fit: cover; 
-            border-radius: 5px; 
+            border-radius: 8px; 
             margin: 0 auto 15px auto; 
             border: 2px solid white; 
             box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
             display: block;
-            flex-shrink: 0;
         }
 
         .letter-header { 
-            font-size: 1.3rem; 
+            font-size: 1.2rem; 
             color: #ff4d6d; 
             font-weight: bold; 
-            margin-bottom: 20px; 
+            margin-bottom: 15px; 
             text-align: center; 
-            letter-spacing: 1px;
         }
 
-        /* FONT SIZE INCREASED TO FILL SPACE */
+        /* FIXED: Text will now stay inside the paper */
         .letter-content { 
-            font-size: 1.05rem; 
-            line-height: 1.7; 
+            font-size: 0.95rem; 
+            line-height: 1.6; 
             color: #333; 
             text-align: justify; 
             font-family: 'Georgia', serif; 
+            margin-bottom: 20px;
         }
 
         .letter-footer { 
-            font-size: 0.8rem; 
+            font-size: 0.75rem; 
             font-weight: bold; 
             color: #ff4d6d; 
-            margin-top: auto; 
             text-align: center; 
             border-top: 1px solid #eee; 
             padding-top: 15px; 
+            margin-top: 10px;
         }
 
         .btn-choice { padding: 12px 30px; border: none; border-radius: 25px; font-weight: bold; cursor: pointer; background: var(--pink-dark); color: white; margin: 10px; box-shadow: 0 4px 0 #e07a91; }
+        
         .wa-link { 
             position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
             background: var(--whatsapp-green); color: white; padding: 12px 40px; border-radius: 30px; 
