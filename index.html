@@ -52,15 +52,15 @@
             z-index: 5;
         }
 
-        /* PHONE FRIENDLY LETTER */
+        /* UPDATED: SCROLLABLE LETTER WITH LEFT INDICATOR */
         #letter-overlay {
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%) scale(0);
-            width: 350px; /* Smaller base width */
-            max-width: 85vw; /* Very safe for all phones */
-            height: 500px; /* Fixed height to enable scrolling */
+            width: 350px; 
+            max-width: 85vw; 
+            height: 500px; 
             max-height: 75vh;
             background: #fffdfa;
             padding: 25px;
@@ -71,14 +71,30 @@
             opacity: 0;
             visibility: hidden;
             transition: transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.5s ease;
+            
+            /* Flip direction to move scrollbar to left */
+            direction: rtl; 
+            overflow-y: auto; 
             display: flex;
             flex-direction: column;
-            overflow-y: auto; /* MAKES IT SCROLLABLE */
-            scrollbar-width: none; /* Hides scrollbar for Firefox */
         }
 
+        /* Reset content direction to normal left-to-right */
+        #letter-overlay > * {
+            direction: ltr;
+        }
+
+        /* Styling the scrollbar as a pink line on the left */
         #letter-overlay::-webkit-scrollbar {
-            display: none; /* Hides scrollbar for Chrome/Safari */
+            width: 4px; /* Thickness of the line */
+        }
+        #letter-overlay::-webkit-scrollbar-track {
+            background: #f0f0f0; /* Color of the path */
+            border-radius: 10px;
+        }
+        #letter-overlay::-webkit-scrollbar-thumb {
+            background: var(--pink-dark); /* Color of the indicator */
+            border-radius: 10px;
         }
 
         .show-letter #background-content { filter: blur(4px); opacity: 0.3; }
@@ -105,12 +121,11 @@
         }
         .open.envelope-wrapper::before { transform: rotateX(180deg); }
 
-        /* IMAGE STYLE */
         .letter img { 
-            width: 80px !important;  
-            height: 80px !important; 
+            width: 85px !important;  
+            height: 85px !important; 
             object-fit: cover; 
-            border-radius: 50%; /* Back to circle for mobile cuteness */
+            border-radius: 50%; 
             margin: 0 auto 15px auto; 
             border: 3px solid white; 
             box-shadow: 0 2px 8px rgba(0,0,0,0.1); 
@@ -118,35 +133,11 @@
             flex-shrink: 0;
         }
 
-        .letter-header { 
-            font-size: 1.1rem; 
-            color: #ff4d6d; 
-            font-weight: bold; 
-            margin-bottom: 15px; 
-            text-align: center; 
-        }
-
-        .letter-content { 
-            font-size: 0.95rem; 
-            line-height: 1.6; 
-            color: #333; 
-            text-align: center; /* Centered looks better on mobile cards */
-            font-family: 'Segoe UI', sans-serif; 
-            margin-bottom: 20px;
-        }
-
-        .letter-footer { 
-            font-size: 0.75rem; 
-            font-weight: bold; 
-            color: #ff4d6d; 
-            text-align: center; 
-            border-top: 1px dashed #ffb7c5; 
-            padding-top: 15px; 
-            margin-top: auto;
-        }
+        .letter-header { font-size: 1.1rem; color: #ff4d6d; font-weight: bold; margin-bottom: 15px; text-align: center; }
+        .letter-content { font-size: 0.95rem; line-height: 1.6; color: #333; text-align: center; font-family: 'Segoe UI', sans-serif; margin-bottom: 20px; }
+        .letter-footer { font-size: 0.75rem; font-weight: bold; color: #ff4d6d; text-align: center; border-top: 1px dashed #ffb7c5; padding-top: 15px; margin-top: auto; }
 
         .btn-choice { padding: 12px 30px; border: none; border-radius: 25px; font-weight: bold; cursor: pointer; background: var(--pink-dark); color: white; margin: 10px; box-shadow: 0 4px 0 #e07a91; }
-        
         .wa-link { 
             position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%);
             background: var(--whatsapp-green); color: white; padding: 12px 40px; border-radius: 30px; 
@@ -155,10 +146,13 @@
             white-space: nowrap;
         }
 
+        #confetti-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 150; }
         #no-screen { display: none; text-align: center; z-index: 200; position: absolute; background: #fff0f3; width: 100%; height: 100%; align-items: center; justify-content: center; flex-direction: column; }
     </style>
 </head>
 <body>
+
+    <canvas id="confetti-canvas"></canvas>
 
     <div id="background-content">
         <p style="color: var(--soft-text); font-style: italic; font-size: 0.9rem; padding: 0 20px;">I made a little something special just for you! 💌✨</p>
@@ -193,15 +187,35 @@
         <br><button class="btn-choice" onclick="backToYes()">Open Anyway</button>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
     <script>
         function handleYes() {
             document.getElementById('envelope-container').classList.add('open');
             document.getElementById('initial-controls').style.visibility = 'hidden';
+            
+            const duration = 3 * 1000;
+            const animationEnd = Date.now() + duration;
+            const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 200 };
+
+            const interval = setInterval(function() {
+                const timeLeft = animationEnd - Date.now();
+                if (timeLeft <= 0) return clearInterval(interval);
+
+                const particleCount = 50 * (timeLeft / duration);
+                confetti(Object.assign({}, defaults, { 
+                    particleCount, 
+                    origin: { x: Math.random(), y: Math.random() - 0.2 },
+                    colors: ['#ffb7c5', '#ff4d6d', '#ffffff']
+                }));
+            }, 250);
+
             setTimeout(() => {
                 document.body.classList.add('show-letter');
                 document.getElementById('wa-btn').style.display = 'block';
             }, 450);
         }
+
         function showNoScreen() { document.getElementById('no-screen').style.display = 'flex'; }
         function backToYes() { document.getElementById('no-screen').style.display = 'none'; handleYes(); }
     </script>
