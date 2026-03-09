@@ -15,7 +15,6 @@
             background-color: #fff0f3;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
             height: 100vh;
@@ -23,7 +22,15 @@
             overflow: hidden;
         }
 
-        /* Girly Decorations */
+        /* Center Wrapper */
+        #main-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+        }
+
         body::before {
             content: "🎀 🌸 🎀 🌸";
             font-size: 2rem;
@@ -34,35 +41,47 @@
         h1 {
             color: var(--pink-dark);
             text-shadow: 2px 2px white;
-            margin-bottom: 20px;
+            margin-bottom: 50px; /* Space for the letter to pop up */
+            text-align: center;
         }
 
         /* Envelope Styling */
         .envelope-wrapper {
-            position: relative;
-            cursor: pointer;
-            transition: transform 0.3s;
-        }
-
-        .envelope {
             position: relative;
             width: 200px;
             height: 150px;
             background: var(--pink-main);
             border-radius: 0 0 5px 5px;
             box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            z-index: 2;
         }
 
-        .envelope::before {
+        /* The Flap */
+        .envelope-wrapper::before {
             content: "";
             position: absolute;
             top: 0;
-            z-index: 2;
+            left: 0;
+            z-index: 4;
             border-left: 100px solid transparent;
             border-right: 100px solid transparent;
             border-top: 80px solid var(--pink-dark);
             transform-origin: top;
-            transition: transform 0.5s;
+            transition: transform 0.5s ease;
+        }
+
+        /* The Front Cover of Envelope */
+        .envelope-wrapper::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-left: 100px solid transparent;
+            border-right: 100px solid transparent;
+            border-bottom: 75px solid #ffcad4; /* Slightly lighter pink for depth */
+            z-index: 3;
         }
 
         .letter {
@@ -73,40 +92,43 @@
             height: 130px;
             background: white;
             text-align: center;
-            padding: 10px;
+            padding: 15px;
             box-sizing: border-box;
-            transition: transform 0.5s;
-            z-index: 1;
+            transition: transform 0.6s ease, opacity 0.4s ease;
+            z-index: 1; /* Hidden behind other layers initially */
             display: flex;
             flex-direction: column;
             justify-content: center;
             border: 1px dashed var(--pink-dark);
+            opacity: 0; /* Fully invisible */
         }
 
         .letter img {
             width: 100%;
-            height: 60px;
+            height: 70px;
             object-fit: cover;
             border-radius: 5px;
+            margin-top: 5px;
         }
 
-        /* Animations */
-        .open.envelope::before {
+        /* Animation States */
+        .open.envelope-wrapper::before {
             transform: rotateX(180deg);
             z-index: 0;
         }
 
         .open .letter {
-            transform: translateY(-100px);
-            z-index: 3;
+            transform: translateY(-120px);
+            z-index: 5; /* Moves to front of everything */
+            opacity: 1;
             height: 200px;
         }
 
-        /* Buttons */
         .btn-container {
-            margin-top: 30px;
+            margin-top: 50px;
             display: flex;
             gap: 20px;
+            z-index: 10;
         }
 
         button {
@@ -118,6 +140,11 @@
             font-weight: bold;
             cursor: pointer;
             box-shadow: 0 4px 0 #e07a91;
+            transition: all 0.2s;
+        }
+
+        button:hover {
+            background: var(--ribbon-red);
         }
 
         button:active {
@@ -137,11 +164,9 @@
         <h1>Do you want to open now?</h1>
         
         <div class="envelope-wrapper" id="envelope-container">
-            <div class="envelope" id="envelope-body">
-                <div class="letter">
-                    <p style="font-size: 0.8rem; color: #ff4d6d; font-weight: bold;">HAPPY BIRTHDAY MY SWEETHEART</p>
-                    <img src="https://via.placeholder.com/150/ffb7c5/ffffff?text=Your+Photo" alt="Birthday Photo">
-                </div>
+            <div class="letter">
+                <p style="font-size: 0.8rem; color: #ff4d6d; font-weight: bold; margin: 0;">HAPPY BIRTHDAY MY SWEETHEART</p>
+                <img src="https://via.placeholder.com/150/ffb7c5/ffffff?text=Your+Photo" alt="Birthday Photo">
             </div>
         </div>
 
@@ -160,7 +185,7 @@
 
     <script>
         function openEnvelope() {
-            document.getElementById('envelope-body').classList.add('open');
+            document.getElementById('envelope-container').classList.add('open');
         }
 
         function showNoScreen() {
@@ -171,7 +196,8 @@
         function backToYes() {
             document.getElementById('no-screen').style.display = 'none';
             document.getElementById('main-screen').style.display = 'flex';
-            setTimeout(openEnvelope, 300);
+            // Slight delay so the transition back to flex feels smooth
+            setTimeout(openEnvelope, 400);
         }
     </script>
 </body>
