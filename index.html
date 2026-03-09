@@ -11,255 +11,170 @@
             --ribbon-red: #ff4d6d;
             --soft-text: #8b5e66;
             --whatsapp-green: #25D366;
-            --paper-width: 500px;
-            --paper-height: 600px;
         }
 
         body {
             background-color: #fff0f3;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            height: 100vh;
-            margin: 0;
             overflow: hidden;
         }
 
-        /* The Blur Layer - Now strictly behind the letter */
-        #overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
+        /* 1. THE BACKGROUND STUFF (This will blur) */
+        #background-content {
+            position: absolute;
             width: 100%;
             height: 100%;
-            background: rgba(255, 240, 243, 0.5);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            z-index: 50; /* Middle layer */
-            opacity: 0;
-            transition: opacity 0.6s ease;
-            pointer-events: none; /* Allows clicking through if needed */
-        }
-
-        .blur-target {
-            transition: filter 0.5s ease, opacity 0.5s ease;
-        }
-
-        .page-open .blur-target {
-            filter: blur(2px);
-            opacity: 0.3;
-        }
-
-        #main-screen {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            width: 100%;
-            text-align: center;
-            z-index: 10; /* Bottom layer */
+            transition: filter 0.6s ease, opacity 0.6s ease;
+            z-index: 1;
         }
 
-        .intro-text { color: var(--soft-text); font-size: 1.1rem; margin-bottom: 5px; font-style: italic; }
-        h1 { color: var(--pink-dark); text-shadow: 2px 2px white; margin-top: 0; margin-bottom: 60px; }
+        /* 2. THE BLUR OVERLAY (Sits between background and letter) */
+        #blur-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 240, 243, 0.4);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.6s ease;
+            z-index: 5;
+        }
 
-        /* Envelope */
+        /* 3. THE LETTER (Top Layer - Completely separate) */
+        #letter-overlay {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            width: 550px; /* Wider as requested */
+            max-width: 90vw;
+            height: 620px;
+            max-height: 85vh;
+            background: #fffdfa;
+            padding: 40px;
+            box-sizing: border-box;
+            border-radius: 4px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+            z-index: 100; /* Highest possible */
+            opacity: 0;
+            visibility: hidden;
+            transition: transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.5s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Active State */
+        .show-letter #background-content { filter: blur(4px); opacity: 0.4; }
+        .show-letter #blur-layer { opacity: 1; visibility: visible; }
+        .show-letter #letter-overlay { opacity: 1; visibility: visible; transform: translate(-50%, -50%) scale(1); }
+
+        /* Envelope Styling */
         .envelope-wrapper {
             position: relative;
             width: 200px;
             height: 150px;
             background: var(--pink-main);
             border-radius: 0 0 5px 5px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-top: 20px;
         }
-
         .envelope-wrapper::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            z-index: 8;
-            border-left: 100px solid transparent;
-            border-right: 100px solid transparent;
-            border-top: 80px solid var(--pink-dark);
-            transform-origin: top;
-            transition: transform 0.5s ease;
+            content: ""; position: absolute; top: 0; left: 0; z-index: 3;
+            border-left: 100px solid transparent; border-right: 100px solid transparent;
+            border-top: 80px solid var(--pink-dark); transform-origin: top; transition: transform 0.5s ease;
         }
-
         .envelope-wrapper::after {
-            content: "";
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0;
-            height: 0;
-            border-left: 100px solid transparent;
-            border-right: 100px solid transparent;
+            content: ""; position: absolute; bottom: 0; left: 0; z-index: 2;
+            border-left: 100px solid transparent; border-right: 100px solid transparent;
             border-bottom: 75px solid #ffcad4;
-            z-index: 7;
         }
-
-        /* Letter - Now on the highest Z-INDEX */
-        .letter {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(0);
-            width: var(--paper-width);
-            height: var(--paper-height);
-            background: #fffdfa;
-            padding: 40px;
-            box-sizing: border-box;
-            border-radius: 2px;
-            box-shadow: 0 10px 50px rgba(0,0,0,0.2);
-            display: flex;
-            flex-direction: column;
-            z-index: 100; /* Highest layer - guaranteed clear */
-            opacity: 0;
-            transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.5s ease;
-        }
-
-        .page-open .letter {
-            transform: translate(-50%, -50%) scale(1);
-            opacity: 1;
-        }
-
-        .page-open #overlay {
-            opacity: 1;
-        }
-
-        .letter-header {
-            font-size: 1.2rem;
-            color: #ff4d6d;
-            font-weight: bold;
-            margin-bottom: 15px;
-            text-align: center;
-        }
-
-        .letter-content {
-            font-size: 0.9rem;
-            line-height: 1.6;
-            color: #333;
-            text-align: justify;
-            font-family: 'Georgia', serif;
-        }
-
-        .letter-footer {
-            font-size: 0.75rem;
-            font-weight: bold;
-            color: #ff4d6d;
-            margin-top: auto;
-            text-align: center;
-            border-top: 1px solid #eee;
-            padding-top: 15px;
-        }
-
-        .letter img {
-            width: 120px;
-            height: 120px;
-            object-fit: cover;
-            border-radius: 50%;
-            margin: 0 auto 15px auto;
-            border: 4px solid white;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        }
-
-        /* WhatsApp Button */
-        #wa-button-container {
-            position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: none;
-            z-index: 110; /* Above everything */
-        }
-
-        .wa-link {
-            background: var(--whatsapp-green);
-            color: white;
-            padding: 12px 40px;
-            border-radius: 30px;
-            font-weight: bold;
-            text-decoration: none;
-            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
-            opacity: 0;
-            animation: fadeIn 0.5s ease 1s forwards;
-        }
-
-        @keyframes fadeIn { to { opacity: 1; } }
-
-        .btn-choice { padding: 12px 30px; border: none; border-radius: 25px; font-weight: bold; cursor: pointer; background: var(--pink-dark); color: white; box-shadow: 0 4px 0 #e07a91; }
         .open.envelope-wrapper::before { transform: rotateX(180deg); }
-        #no-screen { display: none; text-align: center; }
 
-        /* Responsive for Mobile */
-        @media (max-width: 550px) {
-            :root { --paper-width: 90%; --paper-height: 85vh; }
-            .letter { padding: 25px; }
-            .letter-content { font-size: 0.85rem; }
+        /* Letter Content */
+        .letter-header { font-size: 1.2rem; color: #ff4d6d; font-weight: bold; margin-bottom: 15px; text-align: center; }
+        .letter-content { font-size: 0.95rem; line-height: 1.6; color: #333; text-align: justify; font-family: 'Georgia', serif; }
+        .letter-footer { font-size: 0.75rem; font-weight: bold; color: #ff4d6d; margin-top: auto; text-align: center; border-top: 1px solid #eee; padding-top: 15px; }
+        .letter img { width: 110px; height: 110px; object-fit: cover; border-radius: 50%; margin: 0 auto 15px auto; border: 4px solid white; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+
+        /* Buttons */
+        .btn-choice { padding: 12px 30px; border: none; border-radius: 25px; font-weight: bold; cursor: pointer; background: var(--pink-dark); color: white; margin: 10px; box-shadow: 0 4px 0 #e07a91; }
+        .wa-link { 
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+            background: var(--whatsapp-green); color: white; padding: 12px 40px; border-radius: 30px; 
+            font-weight: bold; text-decoration: none; z-index: 110; display: none;
         }
+
+        #no-screen { display: none; text-align: center; z-index: 200; position: absolute; background: #fff0f3; width: 100%; height: 100%; display: none; align-items: center; justify-content: center; flex-direction: column; }
     </style>
 </head>
 <body>
 
-    <div id="overlay"></div>
-
-    <div id="main-screen">
-        <p class="intro-text blur-target">I made a little something special just for you! 💌✨</p>
-        <h1 class="blur-target">Do you want to open now?</h1>
+    <div id="background-content">
+        <p class="intro-text">I made a little something special just for you! 💌✨</p>
+        <h1 style="color: var(--pink-dark);">Do you want to open now?</h1>
         
-        <div class="envelope-wrapper blur-target" id="envelope-container"></div>
+        <div class="envelope-wrapper" id="envelope-container"></div>
 
-        <div class="letter" id="birthday-letter">
-            <img src="https://via.placeholder.com/150/ffb7c5/ffffff?text=US" alt="Birthday Photo">
-            <div class="letter-header">HAPPY BIRTHDAY TO MY DEAREST</div>
-            <div class="letter-content">
-                On your special day, I just want you to know how grateful I am to have you in my life. You are not only someone I love, but also someone who inspires me to be a better person every day. Your kindness, smile, laugh, strength, and the way you care about others make you truly special. Being with you brings so much happiness and comfort into my life, and I honestly cannot imagine my days without you. <br><br>
-                I hope this year brings you endless happiness, success, and all the beautiful things you deserve. No matter what happens in the future, I will always be thankful for the memories we share and the love we have. Happy birthday again dear, and I hope today reminds you how deeply you are loved and appreciated.
-            </div>
-            <div class="letter-footer">
-                PLEASE DO OPEN THIS WHENEVER YOU ARE BEING MAD AT ME &gt;:(
-            </div>
-        </div>
-
-        <div class="btn-container blur-target" id="initial-controls" style="margin-top: 60px; display: flex; gap: 20px;">
+        <div id="initial-controls" style="margin-top: 40px;">
             <button class="btn-choice" onclick="handleYes()">YES</button>
             <button class="btn-choice" onclick="showNoScreen()">NO</button>
         </div>
+    </div>
 
-        <div id="wa-button-container">
-            <a href="https://wa.link/f4ajfg" target="_blank" class="wa-link">TEXT HIM 💬</a>
+    <div id="blur-layer"></div>
+
+    <div id="letter-overlay">
+        <img src="https://via.placeholder.com/150/ffb7c5/ffffff?text=US" alt="Birthday Photo">
+        <div class="letter-header">HAPPY BIRTHDAY TO MY DEAREST</div>
+        <div class="letter-content">
+            On your special day, I just want you to know how grateful I am to have you in my life. You are not only someone I love, but also someone who inspires me to be a better person every day. Your kindness, smile, laugh, strength, and the way you care about others make you truly special. Being with you brings so much happiness and comfort into my life, and I honestly cannot imagine my days without you. <br><br>
+            I hope this year brings you endless happiness, success, and all the beautiful things you deserve. No matter what happens in the future, i will always be thankful for the memories we share and the love we have. Happy birthday again dear, and i hope today reminds you how deeply you are loved and appreciated.
+        </div>
+        <div class="letter-footer">
+            PLEASE DO OPEN THIS WHENEVER YOU ARE BEING MAD AT ME &gt;:(
         </div>
     </div>
 
+    <a href="https://wa.link/f4ajfg" id="wa-btn" target="_blank" class="wa-link">TEXT HIM 💬</a>
+
     <div id="no-screen">
-        <h1>Pretty please? 🥺</h1>
+        <h1 style="color: var(--pink-dark);">Pretty please? 🥺</h1>
         <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHYycWp6Z3R3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZ29vZCZjdD1z/cLS1cfxvGOPVpf9g3y/giphy.gif" width="200">
-        <br><br>
+        <br>
         <button class="btn-choice" onclick="backToYes()">Open Anyway</button>
     </div>
 
     <script>
         function handleYes() {
+            // Open envelope flap
             document.getElementById('envelope-container').classList.add('open');
-            document.getElementById('initial-controls').style.visibility = 'hidden';
-
+            
+            // Trigger the focused view
             setTimeout(() => {
-                document.body.classList.add('page-open');
-                document.getElementById('wa-button-container').style.display = 'block';
+                document.body.classList.add('show-letter');
+                document.getElementById('wa-btn').style.display = 'block';
             }, 400);
         }
 
         function showNoScreen() {
-            document.getElementById('main-screen').style.display = 'none';
-            document.getElementById('no-screen').style.display = 'block';
+            document.getElementById('no-screen').style.display = 'flex';
         }
 
         function backToYes() {
             document.getElementById('no-screen').style.display = 'none';
-            document.getElementById('main-screen').style.display = 'flex';
-            setTimeout(handleYes, 400);
+            handleYes();
         }
     </script>
 </body>
