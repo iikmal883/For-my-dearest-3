@@ -14,14 +14,7 @@
         }
 
         body {
-            /* DECORATED PINK BACKGROUND */
-            background-color: var(--pink-main); /* Fallback solid pink */
-            background-image:
-                linear-gradient(rgba(255, 183, 197, 0.8), rgba(255, 183, 197, 0.8)), /* Base semi-transparent pink */
-                /* Pattern: Love hearts, ribbons, sparkles */
-                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cpath d='M50 80c-10-10-20-10-20-20 0-5 5-10 10-10s10 5 10 10c0-5 5-10 10-10s10 5 10 10c0 10-10 10-20 20zm-15-55a5 5 0 1 1-10 0 5 5 0 0 1 10 0zm40 0a5 5 0 1 1-10 0 5 5 0 0 1 10 0zm-20 40a15 15 0 1 1-30 0 15 15 0 0 1 30 0z' fill='%23ff8fab' fill-opacity='0.4'/%3E%3Cpath d='M20 70l10-10h10v10l-10 10zM80 70l-10-10h-10v10l10 10z' fill='%23ff4d6d' fill-opacity='0.3'/%3E%3Cpath d='M10 20l5 5h5v5l-5-5zM90 20l-5 5h-5v5l5-5z' fill='%23ffffff' fill-opacity='0.5'/%3E%3C/svg%3E");
-            background-size: 100px 100px;
-            
+            background-color: #fff0f3;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             height: 100vh;
@@ -31,14 +24,29 @@
             overflow: hidden;
         }
 
-        /* PASSWORD SCREEN STYLES (Kept clear with white background) */
+        /* 1. GIRLY DECORATED BACKGROUND LAYER */
+        .bg-decor {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--pink-main);
+            background-image: 
+                linear-gradient(rgba(255, 183, 197, 0.7), rgba(255, 183, 197, 0.7)),
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 100 100'%3E%3Cpath d='M50 80c-10-10-20-10-20-20 0-5 5-10 10-10s10 5 10 10c0-5 5-10 10-10s10 5 10 10c0 10-10 10-20 20z' fill='%23ff8fab' fill-opacity='0.4'/%3E%3Ccircle cx='20' cy='20' r='3' fill='white' fill-opacity='0.6'/%3E%3Cpath d='M80 20l-5 5h-5v5l5-5z' fill='white' fill-opacity='0.6'/%3E%3C/svg%3E");
+            background-size: 80px 80px;
+            z-index: -1; /* Always at the very back */
+        }
+
+        /* 2. PASSWORD SCREEN */
         #password-screen {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: #ffffff; /* Clear white for password entry */
+            background: rgba(255, 240, 243, 0.9); /* Slight transparency to see decor */
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -47,147 +55,100 @@
             transition: opacity 0.8s ease, visibility 0.8s ease;
         }
 
-        .pass-title {
-            color: var(--pink-dark);
-            font-size: 1.8rem;
-            font-weight: bold;
-            margin-bottom: 10px;
-            text-shadow: 1px 1px white;
-        }
-
-        .pass-hint {
-            color: var(--soft-text);
-            font-style: italic;
-            margin-bottom: 30px;
-            font-size: 1rem;
-        }
-
-        .pass-container {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 30px;
-        }
+        .pass-title { color: var(--pink-dark); font-size: 1.8rem; font-weight: bold; margin-bottom: 10px; }
+        .pass-hint { color: var(--soft-text); font-style: italic; margin-bottom: 30px; font-size: 1rem; }
+        .pass-container { display: flex; gap: 8px; margin-bottom: 30px; }
 
         .pass-input {
-            width: 40px;
-            height: 50px;
-            border: 2px solid var(--pink-main);
-            border-radius: 8px;
-            text-align: center;
-            font-size: 1.5rem;
-            background: white;
-            color: var(--pink-dark);
-            pointer-events: none;
+            width: 35px; height: 45px; border: 2px solid var(--pink-main); border-radius: 8px;
+            text-align: center; font-size: 1.5rem; background: white; color: var(--pink-dark);
         }
 
-        /* KEYPAD STYLING */
-        .keypad {
-            display: grid;
-            grid-template-columns: repeat(3, 70px);
-            gap: 15px;
-            justify-content: center;
-        }
-
+        .keypad { display: grid; grid-template-columns: repeat(3, 65px); gap: 12px; }
         .key {
-            width: 70px;
-            height: 70px;
-            background: white;
-            border: 1px solid var(--pink-main);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.4rem;
-            font-weight: bold;
-            color: var(--pink-dark);
-            cursor: pointer;
+            width: 65px; height: 65px; background: white; border: 1px solid var(--pink-main);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 1.3rem; font-weight: bold; color: var(--pink-dark); cursor: pointer;
             box-shadow: 0 4px 0 var(--pink-main);
-            transition: all 0.1s;
-            user-select: none;
         }
-
-        .key:active {
-            transform: translateY(4px);
-            box-shadow: none;
-        }
-
+        .key:active { transform: translateY(2px); box-shadow: none; }
         .key.zero { grid-column: 2; }
-        .key.delete { font-size: 0.9rem; color: var(--ribbon-red); }
+        .key.delete { font-size: 0.8rem; color: var(--ribbon-red); }
 
-        .error-shake {
-            animation: shake 0.4s;
-            border-color: var(--ribbon-red) !important;
-        }
-
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-10px); }
-            75% { transform: translateX(10px); }
-        }
-
-        @media (max-width: 500px) {
-            .pass-title { font-size: 1.5rem; }
-            .pass-hint { font-size: 0.9rem; margin-bottom: 20px; }
-            .pass-container { gap: 6px; margin-bottom: 20px; }
-            .pass-input { width: 30px; height: 40px; font-size: 1.2rem; }
-            .keypad { grid-template-columns: repeat(3, 60px); gap: 10px; }
-            .key { width: 60px; height: 60px; font-size: 1.2rem; }
-        }
-
-        /* MAIN CONTENT WRAPPER */
+        /* 3. MAIN CONTENT */
         #main-content-wrapper {
             opacity: 0;
-            transition: opacity 1s ease;
-            display: none; 
+            display: none;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
             width: 100%;
             height: 100%;
+            z-index: 10;
+            transition: opacity 1s ease;
         }
 
-        #background-content { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
-        #blur-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 240, 243, 0.4); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); opacity: 0; visibility: hidden; transition: opacity 0.6s ease; z-index: 5; }
-        #letter-overlay { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0); width: 350px; max-width: 85vw; height: 500px; max-height: 75vh; background: #fffdfa; padding: 25px; box-sizing: border-box; border-radius: 12px; box-shadow: 0 20px 60px rgba(0,0,0,0.2); z-index: 100; opacity: 0; visibility: hidden; transition: transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.5s ease; direction: rtl; overflow-y: auto; display: flex; flex-direction: column; }
-        #letter-overlay > * { direction: ltr; }
-        #letter-overlay::-webkit-scrollbar { width: 4px; }
-        #letter-overlay::-webkit-scrollbar-thumb { background: var(--pink-dark); border-radius: 10px; }
-
-        .show-letter #background-content { filter: blur(4px); opacity: 0.3; }
-        .show-letter #blur-layer { opacity: 1; visibility: visible; }
-        .show-letter #letter-overlay { opacity: 1; visibility: visible; transform: translate(-50%, -50%) scale(1); }
-
-        .envelope-wrapper { position: relative; width: 180px; height: 130px; background: var(--pink-main); border-radius: 0 0 5px 5px; margin-top: 20px; }
-        .envelope-wrapper::before { content: ""; position: absolute; top: 0; left: 0; z-index: 3; border-left: 90px solid transparent; border-right: 90px solid transparent; border-top: 70px solid var(--pink-dark); transform-origin: top; transition: transform 0.5s ease; }
-        .envelope-wrapper::after { content: ""; position: absolute; bottom: 0; left: 0; z-index: 2; border-left: 90px solid transparent; border-right: 90px solid transparent; border-bottom: 65px solid #ffcad4; }
+        #background-content { text-align: center; z-index: 11; }
+        
+        .envelope-wrapper {
+            position: relative;
+            width: 180px;
+            height: 130px;
+            background: var(--pink-main);
+            border-radius: 0 0 5px 5px;
+            margin: 20px auto;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        .envelope-wrapper::before {
+            content: ""; position: absolute; top: 0; left: 0; z-index: 3;
+            border-left: 90px solid transparent; border-right: 90px solid transparent;
+            border-top: 70px solid var(--pink-dark); transform-origin: top; transition: transform 0.5s ease;
+        }
+        .envelope-wrapper::after {
+            content: ""; position: absolute; bottom: 0; left: 0; z-index: 2;
+            border-left: 90px solid transparent; border-right: 90px solid transparent;
+            border-bottom: 65px solid #ffcad4;
+        }
         .open.envelope-wrapper::before { transform: rotateX(180deg); }
 
-        .letter img { width: 85px !important; height: 85px !important; object-fit: cover; border-radius: 50%; margin: 0 auto 15px auto; border: 3px solid white; box-shadow: 0 2px 8px rgba(0,0,0,0.1); display: block; flex-shrink: 0; }
-        .letter-header { font-size: 1.1rem; color: #ff4d6d; font-weight: bold; margin-bottom: 15px; text-align: center; }
-        .letter-content { font-size: 0.95rem; line-height: 1.6; color: #333; text-align: center; font-family: 'Segoe UI', sans-serif; margin-bottom: 20px; }
-        .letter-footer { font-size: 0.75rem; font-weight: bold; color: #ff4d6d; text-align: center; border-top: 1px dashed #ffb7c5; padding-top: 15px; margin-top: auto; }
+        /* 4. LETTER STYLES */
+        #letter-overlay {
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0);
+            width: 350px; max-width: 85vw; height: 500px; max-height: 75vh;
+            background: #fffdfa; padding: 25px; border-radius: 12px; z-index: 100;
+            opacity: 0; visibility: hidden; transition: all 0.7s ease;
+            overflow-y: auto; direction: rtl;
+        }
+        #letter-overlay > * { direction: ltr; }
+        .show-letter #letter-overlay { opacity: 1; visibility: visible; transform: translate(-50%, -50%) scale(1); }
 
-        .btn-choice { padding: 12px 30px; border: none; border-radius: 25px; font-weight: bold; cursor: pointer; background: var(--pink-dark); color: white; margin: 10px; box-shadow: 0 4px 0 #e07a91; }
-        .wa-link { position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%); background: var(--whatsapp-green); color: white; padding: 12px 40px; border-radius: 30px; font-weight: bold; text-decoration: none; z-index: 110; display: none; box-shadow: 0 5px 15px rgba(0,0,0,0.2); white-space: nowrap; }
-        #confetti-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 150; }
-        #no-screen { display: none; text-align: center; z-index: 200; position: absolute; background: #fff0f3; width: 100%; height: 100%; align-items: center; justify-content: center; flex-direction: column; }
+        .letter img { width: 85px; height: 85px; object-fit: cover; border-radius: 50%; margin: 0 auto 15px; border: 3px solid white; display: block; }
+        .letter-header { color: #ff4d6d; font-weight: bold; text-align: center; }
+        .letter-content { font-size: 0.95rem; line-height: 1.6; color: #333; text-align: center; }
+
+        .wa-link { position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%); background: var(--whatsapp-green); color: white; padding: 12px 40px; border-radius: 30px; text-decoration: none; font-weight: bold; z-index: 110; display: none; }
+        
+        #no-screen { display: none; text-align: center; position: fixed; width: 100%; height: 100%; background: #fff0f3; align-items: center; justify-content: center; flex-direction: column; z-index: 500; }
+        .error-shake { animation: shake 0.4s; }
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-8px); } 75% { transform: translateX(8px); } }
     </style>
 </head>
 <body>
 
-    <audio id="mySong" loop>
-        <source src="song.mp3" type="audio/mpeg">
-    </audio>
+    <audio id="mySong" loop><source src="song.mp3" type="audio/mpeg"></audio>
+
+    <div class="bg-decor"></div>
 
     <div id="password-screen">
         <div class="pass-title">Enter Passcode</div>
         <p class="pass-hint">Hint: Our monthsary date 🗓️</p>
         <div class="pass-container">
-            <input type="password" class="pass-input" maxlength="1" readonly>
-            <input type="password" class="pass-input" maxlength="1" readonly>
-            <input type="password" class="pass-input" maxlength="1" readonly>
-            <input type="password" class="pass-input" maxlength="1" readonly>
-            <input type="password" class="pass-input" maxlength="1" readonly>
-            <input type="password" class="pass-input" maxlength="1" readonly>
+            <input type="password" class="pass-input" readonly>
+            <input type="password" class="pass-input" readonly>
+            <input type="password" class="pass-input" readonly>
+            <input type="password" class="pass-input" readonly>
+            <input type="password" class="pass-input" readonly>
+            <input type="password" class="pass-input" readonly>
         </div>
         <div class="keypad">
             <div class="key" onclick="pressKey('1')">1</div>
@@ -199,24 +160,22 @@
             <div class="key" onclick="pressKey('7')">7</div>
             <div class="key" onclick="pressKey('8')">8</div>
             <div class="key" onclick="pressKey('9')">9</div>
-            <div></div> 
-            <div class="key zero" onclick="pressKey('0')">0</div>
-            <div class="key delete" onclick="deleteKey()">DEL</div>
+            <div></div><div class="key zero" onclick="pressKey('0')">0</div><div class="key delete" onclick="deleteKey()">DEL</div>
         </div>
     </div>
 
     <div id="main-content-wrapper">
-        <canvas id="confetti-canvas"></canvas>
+        <canvas id="confetti-canvas" style="position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:150;"></canvas>
         <div id="background-content">
             <p style="color: var(--soft-text); font-style: italic; font-size: 0.9rem; padding: 0 20px;">I made a little something special just for you! 💌✨</p>
             <h1 style="color: var(--pink-dark); font-size: 1.4rem;">Do you want to open now?</h1>
             <div class="envelope-wrapper" id="envelope-container"></div>
             <div id="initial-controls" style="margin-top: 40px;">
-                <button class="btn-choice" onclick="handleYes()">YES</button>
-                <button class="btn-choice" onclick="showNoScreen()">NO</button>
+                <button class="btn-choice" style="padding:12px 30px; border:none; border-radius:25px; background:var(--pink-dark); color:white; font-weight:bold; cursor:pointer;" onclick="handleYes()">YES</button>
+                <button class="btn-choice" style="padding:12px 30px; border:none; border-radius:25px; background:var(--pink-dark); color:white; font-weight:bold; cursor:pointer;" onclick="showNoScreen()">NO</button>
             </div>
         </div>
-        <div id="blur-layer"></div>
+        
         <div id="letter-overlay">
             <img src="picture.jpeg" alt="Birthday Photo">
             <div class="letter-header">HAPPY BIRTHDAY TO MY DEAREST</div>
@@ -224,100 +183,49 @@
                 On your special day, I just want you to know how grateful I am to have you in my life. You are not only someone I love, but also someone who inspires me to be a better person every day. Your kindness, smile, laugh, strength, and the way you care about others make you truly special. Being with you brings so much happiness and comfort into my life, and I honestly cannot imagine my days without you. <br><br>
                 I hope this year brings you endless happiness, success, and all the beautiful things you deserve. No matter what happens in the future, i will always be thankful for the memories we share and the love we have. Happy birthday again dear, and i hope today reminds you how deeply you are loved and appreciated.
             </div>
-            <div class="letter-footer">
-                PLEASE DO OPEN THIS WHENEVER YOU ARE BEING MAD AT ME &gt;:(
+            <div style="font-size:0.75rem; color:#ff4d6d; text-align:center; padding-top:15px; border-top:1px dashed #ffb7c5; margin-top:auto;">
+                PLEASE DO OPEN THIS WHENEVER YOU ARE BEING MAD AT ME >:(
             </div>
         </div>
         <a href="https://wa.link/f4ajfg" id="wa-btn" target="_blank" class="wa-link">TEXT HIM 💬</a>
-        <div id="no-screen">
-            <h1 style="color: var(--pink-dark);">Pretty please? 🥺</h1>
-            <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHYycWp6Z3R3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZ29vZCZjdD1z/cLS1cfxvGOPVpf9g3y/giphy.gif" width="180">
-            <br><button class="btn-choice" onclick="backToYes()">Open Anyway</button>
-        </div>
+    </div>
+
+    <div id="no-screen">
+        <h1 style="color: var(--pink-dark);">Pretty please? 🥺</h1>
+        <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHYycWp6Z3R3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZ29vZCZjdD1z/cLS1cfxvGOPVpf9g3y/giphy.gif" width="180">
+        <br><button class="btn-choice" style="padding:12px 30px; border:none; border-radius:25px; background:var(--pink-dark); color:white; font-weight:bold; cursor:pointer;" onclick="backToYes()">Open Anyway</button>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-
     <script>
         const correctPass = "080823";
         let typedPass = "";
-
-        function pressKey(num) {
-            if (typedPass.length < 6) {
-                typedPass += num;
-                updateInputs();
-                if (typedPass.length === 6) {
-                    checkPassword();
-                }
-            }
-        }
-
-        function deleteKey() {
-            typedPass = typedPass.slice(0, -1);
-            updateInputs();
-        }
-
-        function updateInputs() {
-            const inputs = document.querySelectorAll('.pass-input');
-            inputs.forEach((input, i) => {
-                input.value = typedPass[i] ? "*" : "";
-            });
-        }
-
+        function pressKey(num) { if (typedPass.length < 6) { typedPass += num; updateInputs(); if (typedPass.length === 6) checkPassword(); } }
+        function deleteKey() { typedPass = typedPass.slice(0, -1); updateInputs(); }
+        function updateInputs() { const inputs = document.querySelectorAll('.pass-input'); inputs.forEach((input, i) => input.value = typedPass[i] ? "*" : ""); }
         function checkPassword() {
             if (typedPass === correctPass) {
-                // START THE SONG HERE
-                const audio = document.getElementById('mySong');
-                audio.volume = 0.5; // Set volume to 50%
-                audio.play();
-
+                const audio = document.getElementById('mySong'); audio.volume = 0.5; audio.play();
                 document.getElementById('password-screen').style.opacity = '0';
                 setTimeout(() => {
                     document.getElementById('password-screen').style.display = 'none';
-                    document.getElementById('main-content-wrapper').style.display = 'flex';
-                    setTimeout(() => {
-                        document.getElementById('main-content-wrapper').style.opacity = '1';
-                    }, 50);
+                    const main = document.getElementById('main-content-wrapper');
+                    main.style.display = 'flex'; setTimeout(() => main.style.opacity = '1', 50);
                 }, 800);
             } else {
                 const inputs = document.querySelectorAll('.pass-input');
                 inputs.forEach(input => input.classList.add('error-shake'));
-                setTimeout(() => {
-                    inputs.forEach(input => input.classList.remove('error-shake'));
-                    typedPass = "";
-                    updateInputs();
-                }, 600);
+                setTimeout(() => { inputs.forEach(input => input.classList.remove('error-shake')); typedPass = ""; updateInputs(); }, 600);
             }
         }
-
         function handleYes() {
             document.getElementById('envelope-container').classList.add('open');
             document.getElementById('initial-controls').style.visibility = 'hidden';
-            
-            const duration = 3 * 1000;
-            const animationEnd = Date.now() + duration;
-            const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 200 };
-
-            const interval = setInterval(function() {
-                const timeLeft = animationEnd - Date.now();
-                if (timeLeft <= 0) return clearInterval(interval);
-
-                const particleCount = 50 * (timeLeft / duration);
-                confetti(Object.assign({}, defaults, { 
-                    particleCount, 
-                    origin: { x: Math.random(), y: Math.random() - 0.2 },
-                    colors: ['#ffb7c5', '#ff4d6d', '#ffffff']
-                }));
-            }, 250);
-
-            setTimeout(() => {
-                document.body.classList.add('show-letter');
-                document.getElementById('wa-btn').style.display = 'block';
-            }, 450);
+            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#ffb7c5', '#ff4d6d', '#ffffff'] });
+            setTimeout(() => { document.body.classList.add('show-letter'); document.getElementById('wa-btn').style.display = 'block'; }, 450);
         }
-
-        function showNoScreen() { document.getElementById('no-screen').style.display = 'flex'; }
-        function backToYes() { document.getElementById('no-screen').style.display = 'none'; handleYes(); }
+        function showNoScreen() { document.getElementById('main-content-wrapper').style.display = 'none'; document.getElementById('no-screen').style.display = 'flex'; }
+        function backToYes() { document.getElementById('no-screen').style.display = 'none'; document.getElementById('main-content-wrapper').style.display = 'flex'; handleYes(); }
     </script>
 </body>
 </html>
