@@ -40,7 +40,6 @@
             transition: opacity 0.8s ease, visibility 0.8s ease;
         }
 
-        /* NEW: Password Title Style */
         .pass-title {
             color: var(--pink-dark);
             font-size: 1.8rem;
@@ -63,7 +62,7 @@
         }
 
         .pass-input {
-            width: 40px;
+            width: 40px; /* Default Desktop Size */
             height: 50px;
             border: 2px solid var(--pink-main);
             border-radius: 8px;
@@ -77,13 +76,13 @@
         /* KEYPAD STYLING */
         .keypad {
             display: grid;
-            grid-template-columns: repeat(3, 70px);
+            grid-template-columns: repeat(3, 70px); /* Default Desktop Size */
             gap: 15px;
             justify-content: center;
         }
 
         .key {
-            width: 70px;
+            width: 70px; /* Default Desktop Size */
             height: 70px;
             background: white;
             border: 1px solid var(--pink-main);
@@ -117,6 +116,30 @@
             0%, 100% { transform: translateX(0); }
             25% { transform: translateX(-10px); }
             75% { transform: translateX(10px); }
+        }
+
+        /* NEW: MOBILE RESPONSIVE STYLES FOR PASSCODE */
+        @media (max-width: 500px) {
+            .pass-title { font-size: 1.5rem; }
+            .pass-hint { font-size: 0.9rem; margin-bottom: 20px; }
+            
+            .pass-container { gap: 6px; margin-bottom: 20px; }
+            .pass-input {
+                width: 30px; /* Smaller Mobile Size */
+                height: 40px;
+                font-size: 1.2rem;
+            }
+
+            .keypad {
+                grid-template-columns: repeat(3, 60px); /* Smaller Mobile Size */
+                gap: 10px;
+            }
+            .key {
+                width: 60px; /* Smaller Mobile Size */
+                height: 60px;
+                font-size: 1.2rem;
+            }
+            .key.delete { font-size: 0.8rem; }
         }
 
         /* MAIN CONTENT WRAPPER */
