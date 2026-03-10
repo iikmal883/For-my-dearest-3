@@ -36,7 +36,7 @@
                 linear-gradient(rgba(255, 183, 197, 0.7), rgba(255, 183, 197, 0.7)),
                 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 100 100'%3E%3Cpath d='M50 80c-10-10-20-10-20-20 0-5 5-10 10-10s10 5 10 10c0-5 5-10 10-10s10 5 10 10c0 10-10 10-20 20z' fill='%23ff8fab' fill-opacity='0.4'/%3E%3Ccircle cx='20' cy='20' r='3' fill='white' fill-opacity='0.6'/%3E%3Cpath d='M80 20l-5 5h-5v5l5-5z' fill='white' fill-opacity='0.6'/%3E%3C/svg%3E");
             background-size: 80px 80px;
-            z-index: -1; /* Always at the very back */
+            z-index: -1;
         }
 
         /* 2. PASSWORD SCREEN */
@@ -46,7 +46,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(255, 240, 243, 0.9); /* Slight transparency to see decor */
+            background: rgba(255, 240, 243, 0.95);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -89,6 +89,20 @@
         }
 
         #background-content { text-align: center; z-index: 11; }
+
+        /* FIXED: OUTLINED AND SHADOWED TEXT */
+        .main-question {
+            color: var(--pink-dark); 
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-shadow: 
+                -1.5px -1.5px 0 #fff,  
+                 1.5px -1.5px 0 #fff,
+                -1.5px  1.5px 0 #fff,
+                 1.5px  1.5px 0 #fff,
+                 0px 4px 10px rgba(255, 143, 171, 0.4); /* Pink glow */
+            margin-bottom: 20px;
+        }
         
         .envelope-wrapper {
             position: relative;
@@ -122,6 +136,9 @@
         #letter-overlay > * { direction: ltr; }
         .show-letter #letter-overlay { opacity: 1; visibility: visible; transform: translate(-50%, -50%) scale(1); }
 
+        #letter-overlay::-webkit-scrollbar { width: 4px; }
+        #letter-overlay::-webkit-scrollbar-thumb { background: var(--pink-dark); border-radius: 10px; }
+
         .letter img { width: 85px; height: 85px; object-fit: cover; border-radius: 50%; margin: 0 auto 15px; border: 3px solid white; display: block; }
         .letter-header { color: #ff4d6d; font-weight: bold; text-align: center; }
         .letter-content { font-size: 0.95rem; line-height: 1.6; color: #333; text-align: center; }
@@ -135,7 +152,7 @@
 </head>
 <body>
 
-    <audio id="mySong" loop><source src="song.mp3" type="audio/mpeg"></audio>
+    <audio id="mySong"><source src="song.mp3" type="audio/mpeg"></audio>
 
     <div class="bg-decor"></div>
 
@@ -165,10 +182,9 @@
     </div>
 
     <div id="main-content-wrapper">
-        <canvas id="confetti-canvas" style="position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:150;"></canvas>
         <div id="background-content">
             <p style="color: var(--soft-text); font-style: italic; font-size: 0.9rem; padding: 0 20px;">I made a little something special just for you! 💌✨</p>
-            <h1 style="color: var(--pink-dark); font-size: 1.4rem;">Do you want to open now?</h1>
+            <h1 class="main-question">Do you want to open now?</h1>
             <div class="envelope-wrapper" id="envelope-container"></div>
             <div id="initial-controls" style="margin-top: 40px;">
                 <button class="btn-choice" style="padding:12px 30px; border:none; border-radius:25px; background:var(--pink-dark); color:white; font-weight:bold; cursor:pointer;" onclick="handleYes()">YES</button>
@@ -200,12 +216,26 @@
     <script>
         const correctPass = "080823";
         let typedPass = "";
+        let playCount = 0; // TRACKS HOW MANY TIMES MUSIC PLAYED
+
         function pressKey(num) { if (typedPass.length < 6) { typedPass += num; updateInputs(); if (typedPass.length === 6) checkPassword(); } }
         function deleteKey() { typedPass = typedPass.slice(0, -1); updateInputs(); }
         function updateInputs() { const inputs = document.querySelectorAll('.pass-input'); inputs.forEach((input, i) => input.value = typedPass[i] ? "*" : ""); }
+        
         function checkPassword() {
             if (typedPass === correctPass) {
-                const audio = document.getElementById('mySong'); audio.volume = 0.5; audio.play();
+                const audio = document.getElementById('mySong'); 
+                audio.volume = 0.5; 
+                audio.play();
+                
+                // MUSIC LOGIC: STOP AFTER 2 PLAYS
+                audio.onended = function() {
+                    playCount++;
+                    if (playCount < 2) {
+                        audio.play();
+                    }
+                };
+
                 document.getElementById('password-screen').style.opacity = '0';
                 setTimeout(() => {
                     document.getElementById('password-screen').style.display = 'none';
@@ -218,6 +248,7 @@
                 setTimeout(() => { inputs.forEach(input => input.classList.remove('error-shake')); typedPass = ""; updateInputs(); }, 600);
             }
         }
+
         function handleYes() {
             document.getElementById('envelope-container').classList.add('open');
             document.getElementById('initial-controls').style.visibility = 'hidden';
