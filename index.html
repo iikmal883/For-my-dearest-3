@@ -27,7 +27,6 @@
             overflow: hidden;
         }
 
-        /* BACKGROUND PATTERN */
         .bg-decor {
             position: fixed;
             inset: 0;
@@ -38,7 +37,7 @@
             z-index: -1;
         }
 
-        /* 1. PASSCODE SCREEN (Responsive Fix) */
+        /* 1. PASSWORD SCREEN */
         #password-screen {
             position: fixed;
             inset: 0;
@@ -92,7 +91,7 @@
             cursor: pointer;
         }
 
-        /* 2. MAIN ENVELOPE SCREEN (Centered Fix) */
+        /* 2. MAIN INTERFACE (CENTERED) */
         #main-content-wrapper {
             display: none;
             flex-direction: column;
@@ -106,40 +105,84 @@
         .main-question {
             color: var(--pink-dark);
             font-size: 1.4rem;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
             text-shadow: 2px 2px 0px white, -2px -2px 0px white, 2px -2px 0px white, -2px 2px 0px white;
             padding: 0 15px;
         }
+
+        /* ENVELOPE DESIGN */
+        .envelope-wrapper {
+            position: relative;
+            width: 200px;
+            height: 140px;
+            background: #f8adbc;
+            border-radius: 0 0 10px 10px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: center;
+            margin: 0 auto;
+        }
+
+        #flap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-left: 100px solid transparent;
+            border-right: 100px solid transparent;
+            border-top: 80px solid var(--pink-dark);
+            transform-origin: top;
+            transition: 0.6s;
+            z-index: 10;
+        }
+
+        .envelope-wrapper::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-left: 100px solid #ffcad4;
+            border-right: 100px solid #ffcad4;
+            border-bottom: 70px solid #ffcad4;
+            border-radius: 0 0 10px 10px;
+            z-index: 5;
+        }
+
+        /* HEART SEAL */
+        .heart-seal {
+            position: absolute;
+            top: 60px;
+            width: 40px;
+            height: 40px;
+            background: var(--ribbon-red);
+            transform: rotate(-45deg);
+            z-index: 15;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            transition: opacity 0.3s;
+        }
+        .heart-seal::before, .heart-seal::after {
+            content: "";
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background: var(--ribbon-red);
+            border-radius: 50%;
+        }
+        .heart-seal::before { top: -20px; left: 0; }
+        .heart-seal::after { left: 20px; top: 0; }
 
         #initial-controls {
             display: flex;
             justify-content: center;
             gap: 15px;
-            margin-top: 30px;
+            margin-top: 40px;
             width: 100%;
         }
 
-        .envelope-wrapper {
-            position: relative;
-            width: 180px;
-            height: 130px;
-            background: var(--pink-main);
-            border-radius: 0 0 5px 5px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-        }
-
-        #flap {
-            position: absolute;
-            top: 0; left: 0;
-            border-left: 90px solid transparent;
-            border-right: 90px solid transparent;
-            border-top: 70px solid var(--pink-dark);
-            transform-origin: top;
-            transition: 0.6s;
-            z-index: 5;
-        }
-
-        /* 3. THE LETTER (Image Size Locked) */
+        /* 3. LETTER OVERLAY */
         #letter-overlay {
             position: fixed;
             top: 50%; left: 50%;
@@ -147,40 +190,45 @@
             width: 320px;
             max-width: 90vw;
             height: 480px;
-            max-height: 80vh;
+            max-height: 85vh;
             background: #fffdfa;
-            padding: 20px;
+            padding: 25px;
             border-radius: 15px;
             box-shadow: 0 15px 50px rgba(0,0,0,0.2);
             z-index: 200;
             overflow-y: auto;
-            transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: 0.5s;
             visibility: hidden;
+            direction: rtl;
         }
+        #letter-overlay > * { direction: ltr; }
 
-        /* IMAGE LOCKING SYSTEM */
         .img-lock {
             width: 100px !important;
             height: 100px !important;
-            min-width: 100px !important;
-            min-height: 100px !important;
             margin: 0 auto 15px;
             border-radius: 50%;
             border: 3px solid white;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            overflow: hidden; /* This crops the image */
+            overflow: hidden;
             display: block;
         }
-
-        .img-lock img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover; /* This makes the photo fit the circle perfectly */
-        }
+        .img-lock img { width: 100%; height: 100%; object-fit: cover; }
 
         .show-letter #letter-overlay {
             transform: translate(-50%, -50%) scale(1);
             visibility: visible;
+        }
+
+        /* NO SCREEN FIX */
+        #no-screen {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: fixed;
+            inset: 0;
+            background: #fff0f3;
+            z-index: 1100;
         }
 
         .btn-choice {
@@ -216,7 +264,6 @@
     <div id="password-screen">
         <h2 style="color:var(--pink-dark); margin-bottom:5px;">Enter Passcode</h2>
         <p style="font-size:0.9rem; color:var(--soft-text); margin-bottom:20px;">Hint: Our monthsary date 🗓️</p>
-        
         <div class="pass-container">
             <input type="password" class="pass-input" readonly>
             <input type="password" class="pass-input" readonly>
@@ -225,7 +272,6 @@
             <input type="password" class="pass-input" readonly>
             <input type="password" class="pass-input" readonly>
         </div>
-
         <div class="keypad">
             <div class="key" onclick="pressKey('1')">1</div>
             <div class="key" onclick="pressKey('2')">2</div>
@@ -249,11 +295,12 @@
             
             <div class="envelope-wrapper">
                 <div id="flap"></div>
+                <div class="heart-seal" id="seal"></div>
             </div>
 
             <div id="initial-controls">
                 <button class="btn-choice" onclick="handleYes()">YES</button>
-                <button class="btn-choice" onclick="alert('Wrong Choice! 😉')">NO</button>
+                <button class="btn-choice" onclick="showNoScreen()">NO</button>
             </div>
         </div>
 
@@ -262,16 +309,23 @@
                 <img src="picture.jpeg" alt="Us">
             </div>
             <h3 style="color:var(--pink-dark); text-align:center;">HAPPY BIRTHDAY TO MY DEAREST</h3>
-            <p style="font-size:0.92rem; line-height:1.6; color:#333; text-align:center;">
+            <p style="font-size:0.95rem; line-height:1.6; color:#333; text-align:center;">
                 On your special day, I just want you to know how grateful I am to have you in my life. You are not only someone I love, but also someone who inspires me to be a better person every day. <br><br>
                 I hope this year brings you endless happiness, success, and all the beautiful things you deserve. Happy birthday again dear, and I hope today reminds you how deeply you are loved and appreciated.
             </p>
-            <p style="font-size:0.75rem; color:var(--pink-dark); text-align:center; border-top:1px dashed #ccc; padding-top:10px;">
+            <p style="font-size:0.75rem; color:var(--pink-dark); text-align:center; border-top:1px dashed #ccc; padding-top:15px; margin-top:20px;">
                 PLEASE OPEN THIS WHENEVER YOU ARE MAD AT ME >:(
             </p>
         </div>
 
         <a href="https://wa.link/f4ajfg" id="wa-btn" target="_blank" class="wa-link">TEXT HIM 💬</a>
+    </div>
+
+    <div id="no-screen">
+        <h1 style="color: var(--pink-dark);">Pretty please? 🥺</h1>
+        <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHYycWp6Z3R3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZ29vZCZjdD1z/cLS1cfxvGOPVpf9g3y/giphy.gif" width="180">
+        <br>
+        <button class="btn-choice" onclick="closeNoScreen()">Open Anyway</button>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
@@ -287,17 +341,10 @@
                 if (typedPass.length === 6) checkPassword();
             }
         }
-
-        function deleteKey() {
-            typedPass = typedPass.slice(0, -1);
-            updateInputs();
-        }
-
+        function deleteKey() { typedPass = typedPass.slice(0, -1); updateInputs(); }
         function updateInputs() {
             const inputs = document.querySelectorAll('.pass-input');
-            inputs.forEach((input, i) => {
-                input.value = typedPass[i] ? "*" : "";
-            });
+            inputs.forEach((input, i) => input.value = typedPass[i] ? "*" : "");
         }
 
         function checkPassword() {
@@ -306,24 +353,27 @@
                 audio.volume = 0.5;
                 audio.play();
                 audio.onended = () => { playCount++; if (playCount < 2) audio.play(); };
-                
                 document.getElementById('password-screen').style.display = 'none';
                 document.getElementById('main-content-wrapper').style.display = 'flex';
             } else {
-                typedPass = "";
-                updateInputs();
-                alert("Incorrect passcode! Try again.");
+                typedPass = ""; updateInputs();
             }
         }
 
         function handleYes() {
             document.getElementById('flap').style.transform = "rotateX(180deg)";
+            document.getElementById('seal').style.opacity = "0";
             confetti({ particleCount: 150, spread: 70, origin: { y: 0.7 } });
-            
             setTimeout(() => {
                 document.body.classList.add('show-letter');
                 document.getElementById('wa-btn').style.display = 'block';
             }, 600);
+        }
+
+        function showNoScreen() { document.getElementById('no-screen').style.display = 'flex'; }
+        function closeNoScreen() { 
+            document.getElementById('no-screen').style.display = 'none'; 
+            handleYes(); 
         }
     </script>
 </body>
