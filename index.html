@@ -348,15 +348,22 @@
         }
 
         function checkPassword() {
-            if (typedPass === correctPass) {
-                const audio = document.getElementById('mySong');
-                audio.volume = 0.5;
-                audio.play();
-                audio.onended = () => { playCount++; if (playCount < 2) audio.play(); };
+        if (typedPass === correctPass) {
+            const audio = document.getElementById('mySong');
+            audio.volume = 0.5; // Sets volume to 50%
+            audio.play(); // This will play the song once and stop automatically
+
+        // REMOVED the "audio.onended" part that was making it play a second time
+
+            document.getElementById('password-screen').style.opacity = '0';
+            setTimeout(() => {
                 document.getElementById('password-screen').style.display = 'none';
                 document.getElementById('main-content-wrapper').style.display = 'flex';
-            } else {
-                typedPass = ""; updateInputs();
+            }, 800);
+        } else {
+            typedPass = ""; 
+            updateInputs();
+            alert("Incorrect passcode!"); // Optional feedback for wrong pass
             }
         }
 
