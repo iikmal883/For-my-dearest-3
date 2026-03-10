@@ -259,6 +259,15 @@
 
         function checkPassword() {
             if (typedPass === correctPass) {
+                const audio = document.getElementById('mySong');
+        
+        // SET VOLUME TO 50%
+                audio.volume = 0.5; 
+        
+        // START THE SONG
+                audio.play();
+
+                document.getElementById('password-screen').style.opacity = '0';
                 // START THE SONG HERE
                 document.getElementById('mySong').play();
 
